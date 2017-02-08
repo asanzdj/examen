@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "db:create": "node util/db/create",
+    "db:restart": "docker restart expertsdb",
     "db:start": "docker start expertsdb",
     "db:stop": "docker stop expertsdb",
     "db:rm": "docker rm expertsdb",

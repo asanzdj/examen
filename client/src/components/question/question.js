@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 
 import Answers from './answers.js';
 import AddAnswer from './addAnswer.js';
+import {connect} from 'react-redux';
+
+const mapStateToProps = state => ({
+  user: state.auth.user,
+})
 
 class Question extends Component {
 
@@ -31,6 +36,7 @@ class Question extends Component {
             style={{cursor: 'pointer'}}
             onClick={handleCollapseClick} />{' '}
           {question.text}
+           &nbsp; Usuario: {this.props.user.login}
         </div>
         {collapse ? null : <Answers question={question} loading />}
         {collapse ? null : <AddAnswer question={question} />}
@@ -38,4 +44,4 @@ class Question extends Component {
     );
   }
 }
-export default Question;
+export default connect (mapStateToProps, null) (Question);

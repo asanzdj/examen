@@ -6,14 +6,10 @@ import {r, Question} from '../db';
 import {asyncRequest} from '../util';
 
 export default (app) => {
-  app.get('/api/question/:id', passport.authenticate('jwt', {session: false}), asyncRequest(async (req, res) => {
-    // get requested question
-    const question = await Question.get(req.params.id);
-    // send question back
-    res.send(question);
-  }));
-
-  app.get('/api/question', passport.authenticate('jwt', {session: false}), asyncRequest(async (req, res) => {
+  app.post('/api/search', passport.authenticate('jwt', {session: false}),
+  asyncRequest(async (req, res) => {
+    const {text} = req.body;
+    const text2 = text.toLowerCase().trim();
     const skip = parseInt(req.query.skip, 10) || 0;
     const limit = parseInt(req.query.limit, 10) || 10;
     const questions = await r.table('Question')
@@ -21,12 +17,9 @@ export default (app) => {
                              .orderBy(r.desc('creationDate'))
                              .skip(skip)
                              .limit(limit);
+    const filteredQuestions = questions.filter(q => q.text.toLowerCase().trim().indexOf(text2) !== -1);
     // send question back
-    res.send(questions);
+    res.send(filteredQuestions);
   }));
 
-  app.get('/api/questions', asyncRequest(async (req, res) => {
-    const questions = await Question;
-    res.send(questions);
-  }));
 };

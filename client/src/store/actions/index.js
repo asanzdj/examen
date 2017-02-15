@@ -90,3 +90,12 @@ export const createQuestion = payload => ({
   type: ActionTypes.CREATE_QUESTION,
   payload,
 });
+
+export const getQuestionsAction = payload => ({
+  type: ActionTypes.GET_QUESTIONS
+});
+
+export const filterQuestionsAction = payload => ({
+  type: ActionTypes.FILTER_QUESTIONS,
+  payload: payload,
+});

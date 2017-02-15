@@ -12,8 +12,10 @@ export const questions = (state = initialState, action) => {
       return {...state, questions: state.questions.concat(action.payload.questions), status: 'done', hasMore};
     }
     case ActionTypes.GET_ANSWERS_ERROR:
+    case ActionTypes.GET_QUESTIONS_ERROR:
     case ActionTypes.ANSWER_QUESTION_ERROR:
-    case ActionTypes.CREATE_QUESTION_ERROR:
+    case ActionTypes.CREATE_QUESTIONS_ERROR:
+    case ActionTypes.FILTER_QUESTIONS_ERROR:
       return {
         ...state,
         status: 'error',
@@ -41,6 +43,14 @@ export const questions = (state = initialState, action) => {
       const newQuestions = [action.payload, ...state.questions];
       return {...state, questions: newQuestions, status: 'done', hasMore: state.hasMore};
     }
+    case ActionTypes.GET_QUESTIONS_SUCCESS:
+      const questions = action.payload;
+      return {questions};
+
+    case ActionTypes.FILTER_QUESTIONS_SUCCESS:
+      console.log('>>>>PAYLOAD', action.payload)
+      return {...state, questions: action.payload}
+
     default:
       return state;
   }

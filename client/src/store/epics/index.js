@@ -6,7 +6,9 @@ import {getMoreQuestions,
         answerQuestion,
         createQuestion,
         getAnswers,
-        removePendingQuestionNotifications} from './questions';
+        removePendingQuestionNotifications,
+        getQuestions,
+        filterQuestions} from './questions';
 
 export default [
   // auth
@@ -27,4 +29,6 @@ export default [
   createQuestion,
   getAnswers,
   removePendingQuestionNotifications,
+  getQuestions,
+  filterQuestions
 ];

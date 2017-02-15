@@ -113,3 +113,44 @@ export const removePendingQuestionNotifications = action$ => action$
   .map(question =>
     Actions.removeNotificationByRefAction(question.id),
   );
+
+export const getQuestions = action$ => action$
+  .ofType(ActionTypes.GET_QUESTIONS)
+  .map(signRequest)
+  .switchMap(({headers, payload}) => Observable
+    .ajax.get(`http://${host}:${port}/api/questions`, headers)
+    .map(res => res.response)
+    .mergeMap(questions => Observable.of ({
+      type: ActionTypes.GET_QUESTIONS_SUCCESS,
+      payload: questions,
+    }
+    ))
+    .catch(error => Observable.of({
+      type: ActionTypes.GET_QUESTIONS_ERROR,
+      payload: error,
+    },
+      Actions.addNotificationAction({
+        text: `error: ${ajaxErrorToMessage(error)}`, alertType: 'danger',
+      })
+    )));
+
+export const filterQuestions = action$ => action$
+  .ofType(ActionTypes.FILTER_QUESTIONS)
+  .throttleTime(1000)
+  .map(signRequest)
+  .switchMap(({headers, payload}) => Observable
+    .ajax.post(`http://${host}:${port}/api/search`, payload, headers)
+    .map(res => res.response)
+    .mergeMap(questions => Observable.of ({
+      type: ActionTypes.FILTER_QUESTIONS_SUCCESS,
+      payload: questions,
+    }
+    ))
+    .catch(error => Observable.of({
+      type: ActionTypes.FILTER_QUESTIONS_ERROR,
+      payload: error,
+    },
+      Actions.addNotificationAction({
+        text: `error: ${ajaxErrorToMessage(error)}`, alertType: 'danger',
+      })
+    )));

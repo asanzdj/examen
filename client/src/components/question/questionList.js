@@ -12,7 +12,6 @@ const mapStateToProps = state => ({
   questions: state.questions.questions,
 });
 
-
 const mapDispatchToProps = dispatch => ({
   loadMore: payload => dispatch(getMoreQuestions(payload)),
 });
@@ -25,7 +24,7 @@ const QuestionList = ({questions, loadMore, hasMore, loadingMore}) => {
   });
 
   return (
-    <div>
+    <div style={{margin: '10% 0 0 0'}}>
       {!hasMore && questions.length === 0 ?
         <div>No questions yet!</div> :
         <InfiniteScroll

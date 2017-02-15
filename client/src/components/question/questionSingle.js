@@ -54,7 +54,7 @@ class QuestionSingle extends Component {
     };
 
     return (
-      <div>
+      <div style={{margin: '10% 0 0 0'}}>
          {!hasMore && questions.length === 0 ? <div>No questions yet!</div> : null}
          {loadingMore ? <Spinner /> : question ? <Question key={question.id} question={question} /> : questions.length > 0 ? 'No more questions' : null}
          <div className="btn-group col-xs-4 col-xs-offset-5" role="group">

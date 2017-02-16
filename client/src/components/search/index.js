@@ -15,14 +15,12 @@ const mapDispatchToProps = dispatch => ({
 class Search extends Component {
   constructor(props) {
     super(props);
-    this.state = {text: ''};
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(e) {
     const text = e.target.value.trim();
-    this.setState({text: e.target.value});
-    this.props.filter({text: this.state.text});
+    this.props.filter({text: text});
   }
 
   render() {
@@ -33,7 +31,6 @@ class Search extends Component {
           type="text"
           className="form-control"
           onChange={this.handleChange}
-          value = {this.state.text}
         />
     </div>
   )

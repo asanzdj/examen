@@ -136,7 +136,6 @@ export const getQuestions = action$ => action$
 
 export const filterQuestions = action$ => action$
   .ofType(ActionTypes.FILTER_QUESTIONS)
-  .throttleTime(1000)
   .map(signRequest)
   .switchMap(({headers, payload}) => Observable
     .ajax.post(`http://${host}:${port}/api/search`, payload, headers)
@@ -153,4 +152,5 @@ export const filterQuestions = action$ => action$
       Actions.addNotificationAction({
         text: `error: ${ajaxErrorToMessage(error)}`, alertType: 'danger',
       })
-    )));
+    )))
+    .throttleTime(500);

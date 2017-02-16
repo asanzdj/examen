@@ -48,7 +48,6 @@ export const questions = (state = initialState, action) => {
       return {questions};
 
     case ActionTypes.FILTER_QUESTIONS_SUCCESS:
-      console.log('>>>>PAYLOAD', action.payload)
       return {...state, questions: action.payload}
 
     default:

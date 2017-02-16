@@ -99,3 +99,8 @@ export const filterQuestionsAction = payload => ({
   type: ActionTypes.FILTER_QUESTIONS,
   payload: payload,
 });
+
+export const getUser = payload => ({
+  type: ActionTypes.GET_USER,
+  payload: payload,
+});

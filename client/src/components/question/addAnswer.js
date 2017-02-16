@@ -18,7 +18,6 @@ class AddAnswer extends Component {
   }
 
   render() {
-    console.log('_US_ER', this.props.user)
     let answerInput;
     const {question, doAnswer} = this.props;
 

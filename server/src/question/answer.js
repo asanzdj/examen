@@ -28,7 +28,7 @@ export default (app) => {
     }
 
     // append new answer
-    question.answers.push({answer, user: req.user.id});
+    question.answers.push({answer, user: req.user.id, login: req.user.login});
 
     // try saving
     await question.save();

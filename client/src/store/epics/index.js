@@ -30,5 +30,5 @@ export default [
   getAnswers,
   removePendingQuestionNotifications,
   getQuestions,
-  filterQuestions
+  filterQuestions,
 ];

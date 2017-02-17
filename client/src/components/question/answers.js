@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {getAnswers, addObservable, removeObservable, } from '../../store/actions';
+import {getAnswers, addObservable, removeObservable} from '../../store/actions';
 import {registerQuestionObservable} from '../../store/realtime';
 import {Spinner} from '../../components/spinner';
 
@@ -14,11 +14,9 @@ const mapDispatchToProps = dispatch => ({
   getAnswers: questionId => dispatch(getAnswers(questionId)),
   addObservable: observable => dispatch(addObservable(observable)),
   removeObservable: (observable, question) => dispatch(removeObservable({observable, question})),
-  getUser: dispatch(get)
 });
 
 class Answers extends Component {
-
   constructor(props) {
     super(props);
     const {question, getAnswers, addObservable, loading} = this.props;
@@ -44,11 +42,8 @@ class Answers extends Component {
 
 
   render() {
-    const {question, answering} = this.props;
+    const {question, answering, user} = this.props;
     const {loading} = this.state;
-
-    console.log(question);
-
 
     return (
       <div className="panel-body">
@@ -56,7 +51,7 @@ class Answers extends Component {
           <div>
             <ul className="list-group">
               {question.answers.map((answer, i) => (
-                <li className="list-group-item" key={i}>{answer.answer} User: </li>
+                <li className="list-group-item" key={i}>{answer.answer} User: {(answer.login)}</li>
               ))}
               {answering ? <li className="list-group-item" key={question.answers.length}><Spinner /></li> : null}
             </ul>

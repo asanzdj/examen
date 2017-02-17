@@ -3,10 +3,6 @@ import {connect} from 'react-redux';
 
 import {answerQuestion} from '../../store/actions';
 
-const mapStateToProps = state => ({
-  user: state.auth.user,
-})
-
 const mapDispatchToProps = dispatch => ({
   doAnswer: payload => dispatch(answerQuestion(payload)),
 });
@@ -51,4 +47,4 @@ class AddAnswer extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddAnswer);
+export default connect(null, mapDispatchToProps)(AddAnswer);

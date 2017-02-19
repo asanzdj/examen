@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-
 import Answers from './answers.js';
 import AddAnswer from './addAnswer.js';
 import {connect} from 'react-redux';
+import {Link} from 'react-router';
 
 const mapStateToProps = state => ({
   user: state.auth.user,
@@ -36,7 +36,10 @@ class Question extends Component {
             style={{cursor: 'pointer'}}
             onClick={handleCollapseClick} />{' '}
           {question.text}
-           &nbsp; Usuario: {this.props.user.login}
+           &nbsp;
+           <Link to='/profile/{this.props.user.id}'>
+             Usuario: {this.props.user.login}
+           </Link>
         </div>
         {collapse ? null : <Answers question={question} loading />}
         {collapse ? null : <AddAnswer question={question} />}

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router';
 
 import {getAnswers, addObservable, removeObservable} from '../../store/actions';
 import {registerQuestionObservable} from '../../store/realtime';
@@ -51,7 +52,12 @@ class Answers extends Component {
           <div>
             <ul className="list-group">
               {question.answers.map((answer, i) => (
-                <li className="list-group-item" key={i}>{answer.answer} User: {(answer.login)}</li>
+                <li className="list-group-item" key={i}>
+                  {answer.answer} &nbsp;
+                  <Link to='/profile/{answer.user}'>
+                    User: {(answer.login)}
+                  </Link>
+                </li>
               ))}
               {answering ? <li className="list-group-item" key={question.answers.length}><Spinner /></li> : null}
             </ul>

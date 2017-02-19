@@ -33,7 +33,7 @@ const NavBar = ({actualPath, user}) => (
           </NavbarLink>
         </ul>
         {user ? <ul className="nav navbar-nav navbar-right">
-          <li><a>Logged as {user.login}{user.provider ? ` (${user.provider})` : null}</a></li>
+          <li><a href="/profile/me">Logged as {user.login}{user.provider ? ` (${user.provider})` : null}</a></li>
           <Logout />
         </ul> : null}
       </div>

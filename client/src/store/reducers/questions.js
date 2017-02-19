@@ -16,6 +16,7 @@ export const questions = (state = initialState, action) => {
     case ActionTypes.ANSWER_QUESTION_ERROR:
     case ActionTypes.CREATE_QUESTIONS_ERROR:
     case ActionTypes.FILTER_QUESTIONS_ERROR:
+    case ActionTypes.GET_MY_QUESTIONS_ERROR:
       return {
         ...state,
         status: 'error',
@@ -45,10 +46,16 @@ export const questions = (state = initialState, action) => {
     }
     case ActionTypes.GET_QUESTIONS_SUCCESS:
       const questions = action.payload;
-      return {questions};
+      return {...questions};
 
     case ActionTypes.FILTER_QUESTIONS_SUCCESS:
-      return {...state, questions: action.payload}
+      return {...state, questions: action.payload};
+
+    case ActionTypes.GET_MY_QUESTIONS_SUCCESS:
+      return {
+        ...state,
+        questions: action.payload
+      }
 
     default:
       return state;

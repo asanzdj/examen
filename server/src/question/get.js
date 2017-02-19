@@ -29,4 +29,15 @@ export default (app) => {
     const questions = await Question;
     res.send(questions);
   }));
+
+  app.get('/api/getMyQuestions/:id', asyncRequest(async (req, res) => {
+    try {
+      const questions = await Question;
+      const myQuestions = questions.filter(question => question.owner == req.params.id);
+
+      res.send(myQuestions);
+    } catch (e) {
+      res.status(400).send({error: 'User does not exist'});
+    }
+  }));
 };

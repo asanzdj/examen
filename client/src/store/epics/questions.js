@@ -154,3 +154,43 @@ export const filterQuestions = action$ => action$
       })
     )))
     .throttleTime(500);
+
+export const getMyQuestions = action$ => action$
+  .ofType(ActionTypes.GET_MY_QUESTIONS)
+  .map(signRequest)
+  .switchMap(({headers, payload}) => Observable
+    .ajax.get(`http://${host}:${port}/api/getMyQuestions/${payload.id}`, headers)
+    .map(res => res.response)
+    .mergeMap(questions => Observable.of ({
+      type: ActionTypes.GET_MY_QUESTIONS_SUCCESS,
+      payload: questions,
+    }
+    ))
+    .catch(error => Observable.of({
+      type: ActionTypes.GET_MY_QUESTIONS_ERROR,
+      payload: error,
+    },
+      Actions.addNotificationAction({
+        text: `error: ${ajaxErrorToMessage(error)}`, alertType: 'danger',
+      })
+    )));
+
+export const getMyAnswers = action$ => action$
+  .ofType(ActionTypes.GET_MY_ANSWERS)
+  .map(signRequest)
+  .switchMap(({headers, payload}) => Observable
+    .ajax.get(`http://${host}:${port}/api/getMyAnswers/${payload.id}`, headers)
+    .map(res => res.response)
+    .mergeMap(answers => Observable.of ({
+      type: ActionTypes.GET_MY_ANSWERS_SUCCESS,
+      payload: answers,
+    }
+    ))
+    .catch(error => Observable.of({
+      type: ActionTypes.GET_MY_ANSWERS_ERROR,
+      payload: error,
+    },
+      Actions.addNotificationAction({
+        text: `error: ${ajaxErrorToMessage(error)}`, alertType: 'danger',
+      })
+    )));

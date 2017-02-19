@@ -8,7 +8,10 @@ import {getMoreQuestions,
         getAnswers,
         removePendingQuestionNotifications,
         getQuestions,
-        filterQuestions} from './questions';
+        filterQuestions,
+        getMyQuestions,
+        getMyAnswers} from './questions';
+import {getUser} from './user';
 
 export default [
   // auth
@@ -31,4 +34,7 @@ export default [
   removePendingQuestionNotifications,
   getQuestions,
   filterQuestions,
+  getUser,
+  getMyQuestions,
+  getMyAnswers,
 ];

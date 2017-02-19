@@ -104,3 +104,13 @@ export const getUserAction = payload => ({
   type: ActionTypes.GET_USER,
   payload: payload,
 });
+
+export const getMyQuestionsAction = payload => ({
+  type: ActionTypes.GET_MY_QUESTIONS,
+  payload: payload,
+});
+
+export const getMyAnswersAction = payload => ({
+  type: ActionTypes.GET_MY_ANSWERS,
+  payload: payload,
+});

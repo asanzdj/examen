@@ -3,6 +3,8 @@ import {helloWorld} from './helloworld';
 import {notifications} from './notifications';
 import {questions} from './questions';
 import {realtime} from './realtime';
+import {user} from './user';
+import {answers} from './answers';
 
 export default {
   auth,
@@ -10,4 +12,6 @@ export default {
   notifications,
   questions,
   realtime,
+  user,
+  answers,
 };

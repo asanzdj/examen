@@ -217,3 +217,19 @@ export const deleteQuestion = action$ => action$
         text: `error: ${ajaxErrorToMessage(error)}`, alertType: 'danger',
       })
     )));
+
+export const getCreateQuestion = action$ => action$
+    .ofType(ActionTypes.GET_CREATED_QUESTION)
+  .map(signRequest)
+  .switchMap(({headers, payload}) => Observable
+    .ajax.get(`http://${host}:${port}/api/exercise/${payload.id}`,payload, headers)
+    .map(res => res.response)
+    .map(question => ({
+        type: ActionTypes.GET_CREATED_QUESTION_SUCCESS,
+      payload: question,
+    }))
+    .catch(error => Observable.of({
+        type: ActionTypes.GET_CREATED_QUESTION_ERROR,
+      payload: error,
+    }
+    )));

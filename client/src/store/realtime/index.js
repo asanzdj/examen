@@ -3,6 +3,7 @@ import {Observable} from 'rxjs/Observable';
 import {rethinkdb} from 'rethinkdb-websocket-client';
 import _ from 'lodash';
 
+import * as ActionTypes from '../actionTypes';
 import * as Actions from '../actions';
 import {UpdateQuestionNotification} from '../../components/question';
 
@@ -19,23 +20,19 @@ export const registerQuestionObservable = questionId => (conn, getState) =>
       cursor.close();
     };
   }).debounceTime(5000))
-  .map(row => row.new_val)
-  .filter((question) => {
-    if (!question) {
-      return false;
-    }
-    const storedQuestion = _.find(getState().questions.questions, {id: question.id});
-    return !storedQuestion || !_.isEqual(storedQuestion.answers, question.answers);
-  })
-  .map((question) => {
-    const notificationId = Actions.getNextNotificationId();
-    return Actions.addNotificationAction({
-      text: <UpdateQuestionNotification notificationId={notificationId} question={question} />,
-      alertType: 'warning',
-      autoDisposable: false,
-      refCode: `update-question-${question.id}`,
-    });
-  })
+  .map(row => Object.assign({},{new: row.new_val}, {old: row.old_val}))
+  .map(question => (
+    question.new && !question.old ?
+      {
+        type: ActionTypes.CREATE_QUESTION,
+        payload: question.new,
+      }
+    :
+      {
+        type: ActionTypes.DELETE_QUESTION,
+        payload: question.old.id,
+      }
+  ))
   .catch(error => Observable.of(
     Actions.addNotificationAction({text: error.toString(), alertType: 'danger'}),
   ));

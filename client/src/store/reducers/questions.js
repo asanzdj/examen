@@ -59,8 +59,24 @@ export const questions = (state = initialState, action) => {
       };
 
     case ActionTypes.DELETE_QUESTION_SUCCESS:
+      const filter = state.questions.filter(question => question.id !== action.payload.id);
       return {
         ...state,
+        questions: filter
+      };
+
+    case ActionTypes.GET_DELETED_QUESTION:
+      const questionsDel = state.questions.filter(question => question.id !== action.payload);
+      return {
+        ...state,
+        questions: questionsDel
+      }
+
+    case ActionTypes.GET_CREATED_QUESTION:
+      const addedQuestion = state.questions.concat(action.payload);
+      return {
+        ...state,
+        question: addedQuestion
       };
 
     default:

@@ -118,3 +118,13 @@ export const deleteQuestionAction = payload => ({
   type: ActionTypes.DELETE_QUESTION,
   payload: payload,
 });
+
+export const getCreateQuestionAction = payload => ({
+  type: ActionTypes.GET_CREATED_QUESTION,
+  payload,
+});
+
+export const getDeleteQuestionAction = payload => ({
+  type: ActionTypes.GET_DELETED_QUESTION,
+  payload,
+});

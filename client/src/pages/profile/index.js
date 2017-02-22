@@ -25,12 +25,12 @@ class user extends React.Component {
 
   componentWillMount(){
     const {userAuth, getUser} = this.props;
-    this.props.getUser({id: userAuth.id});
+    this.props.getUser({id: this.props.params.id});
     this.props.getMyQuestions({id: userAuth.id});
   }
 
   render(){
-    const {user, userAuth, myQuestions} = this.props;
+    const {user, userAuth, myQuestions, route} = this.props;
     return (
       <div>
         <h1>My profile</h1>

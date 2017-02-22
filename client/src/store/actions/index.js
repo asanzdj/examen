@@ -20,7 +20,6 @@ export const githubLoginAction = payload => ({
   payload,
 });
 
-
 export const logoutAction = () => ({
   type: ActionTypes.DO_LOGOUT,
 });
@@ -112,5 +111,10 @@ export const getMyQuestionsAction = payload => ({
 
 export const getMyAnswersAction = payload => ({
   type: ActionTypes.GET_MY_ANSWERS,
+  payload: payload,
+});
+
+export const deleteQuestionAction = payload => ({
+  type: ActionTypes.DELETE_QUESTION,
   payload: payload,
 });

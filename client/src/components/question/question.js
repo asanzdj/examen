@@ -4,12 +4,19 @@ import AddAnswer from './addAnswer.js';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 
+import {deleteQuestionAction, getUserAction} from '../../store/actions';
+
 const mapStateToProps = state => ({
-  user: state.auth.user,
-})
+  userAuth: state.auth.user,
+  user: state.user.user,
+});
+
+const mapDispatchToProps = dispatch => ({
+  deleteQuestion: payload => dispatch(deleteQuestionAction(payload)),
+  getUser: payload => dispatch(getUserAction(payload)),
+});
 
 class Question extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -17,8 +24,13 @@ class Question extends Component {
     };
   }
 
+  componentWillMount() {
+    const {getUser, question} = this.props;
+    getUser({id: question.owner});
+  }
+
   render() {
-    const {question} = this.props;
+    const {question, user, userAuth, deleteQuestion} = this.props;
     const {collapse} = this.state;
 
     const handleCollapseClick = (e) => {
@@ -29,6 +41,12 @@ class Question extends Component {
       return false;
     };
 
+    const handleDelete = e => {
+      e.preventDefault();
+      deleteQuestion({id: question.id});
+      return false;
+    }
+
     return (
       <div className="panel panel-default">
         <div className="panel-heading">
@@ -37,9 +55,17 @@ class Question extends Component {
             onClick={handleCollapseClick} />{' '}
           {question.text}
            &nbsp;
-           <Link to='/profile/{this.props.user.id}'>
-             Usuario: {this.props.user.login}
-           </Link>
+           <Link to={`/profile/${question.owner}`}>
+             User: {user.login}
+           </Link>&nbsp;&nbsp;
+           {userAuth && question ?
+             question.owner === userAuth.id ?
+               <button
+                 className="btn btn-default glyphicon glyphicon-trash btn-danger"
+                 onClick={handleDelete}>
+               </button>
+              : null
+           : null}
         </div>
         {collapse ? null : <Answers question={question} loading />}
         {collapse ? null : <AddAnswer question={question} />}
@@ -47,4 +73,4 @@ class Question extends Component {
     );
   }
 }
-export default connect (mapStateToProps, null) (Question);
+export default connect (mapStateToProps, mapDispatchToProps)(Question);

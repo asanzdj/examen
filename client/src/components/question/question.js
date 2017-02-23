@@ -30,7 +30,7 @@ class Question extends Component {
   }
 
   render() {
-    const {question, user, userAuth, deleteQuestion} = this.props;
+    const {question, user, userAuth, deleteQuestion, getUser} = this.props;
     const {collapse} = this.state;
 
     const handleCollapseClick = (e) => {
@@ -56,7 +56,12 @@ class Question extends Component {
           {question.text}
            &nbsp;
            <Link to={`/profile/${question.owner}`}>
-             User: {user.login}
+             {user.login === userAuth.login ?
+               <span>User: me</span>
+             :
+               <span>User: {user.login}</span>
+            }
+
            </Link>&nbsp;&nbsp;
            {userAuth && question ?
              question.owner === userAuth.id ?
@@ -67,7 +72,7 @@ class Question extends Component {
               : null
            : null}
         </div>
-        {collapse ? null : <Answers question={question} loading />}
+        {collapse ? null : <Answers question={question} userAuth={userAuth} loading />}
         {collapse ? null : <AddAnswer question={question} />}
       </div>
     );

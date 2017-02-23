@@ -43,7 +43,7 @@ class Answers extends Component {
 
 
   render() {
-    const {question, answering, user} = this.props;
+    const {question, answering, userAuth} = this.props;
     const {loading} = this.state;
 
     return (
@@ -55,7 +55,11 @@ class Answers extends Component {
                 <li className="list-group-item" key={i}>
                   {answer.answer} &nbsp;
                   <Link to='/profile/{answer.user}'>
-                    User: {(answer.login)}
+                    {userAuth.login === answer.login ?
+                      <span>User: me</span>
+                    :
+                      <span>User: {answer.login}</span>
+                    }
                   </Link>
                 </li>
               ))}

@@ -34,6 +34,7 @@ export default (app) => {
       text,
       expirationDate: moment(expirationDate).toDate(),
       owner: req.user.id,
+      votes: 0
     });
     await question.save();
 

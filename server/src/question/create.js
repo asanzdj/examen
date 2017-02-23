@@ -10,6 +10,7 @@ export default (app) => {
   app.post('/api/question', passport.authenticate('jwt', {session: false}), asyncRequest(async (req, res) => {
     // get user input
     const {text, expirationDate} = req.body;
+    const today = moment().format('YYYY-MM-DD');
 
     // make sure text is not empty
     if (!text || !text.length) {
@@ -20,6 +21,11 @@ export default (app) => {
     // validate date
     if (!moment(expirationDate, moment.ISO_8601).isValid()) {
       res.status(400).send({error: 'Date should be valid ISO Date!'});
+      return;
+    }
+
+    if (expirationDate < today) {
+      res.status(400).send({error: 'Date should be after current date!'});
       return;
     }
 

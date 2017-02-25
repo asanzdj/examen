@@ -1,6 +1,6 @@
 import * as ActionTypes from '../actionTypes';
 
-const initialState = {questions: [], status: 'inited', answering: {}, hasMore: true};
+const initialState = {questions: [], question: {}, status: 'inited', answering: {}, hasMore: true};
 
 export const questions = (state = initialState, action) => {
   switch (action.type) {
@@ -17,7 +17,8 @@ export const questions = (state = initialState, action) => {
     case ActionTypes.CREATE_QUESTIONS_ERROR:
     case ActionTypes.FILTER_QUESTIONS_ERROR:
     case ActionTypes.DELETE_QUESTION_ERROR:
-    case ActionTypes.GET_MY_QUESTIONS_ERROR:
+    case ActionTypes.GET_QUESTIONS_ERROR:
+    case ActionTypes.VOTE_QUESTION_ERROR:
       return {
         ...state,
         status: 'error',
@@ -76,8 +77,14 @@ export const questions = (state = initialState, action) => {
       const addedQuestion = state.questions.concat(action.payload);
       return {
         ...state,
-        question: addedQuestion
+        questions: addedQuestion
       };
+
+    case ActionTypes.VOTE_QUESTION_SUCCESS:
+      return {
+        ...state,
+        question: action.payload,
+      }
 
     default:
       return state;

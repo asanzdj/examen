@@ -233,3 +233,28 @@ export const getCreateQuestion = action$ => action$
       payload: error,
     }
     )));
+
+export const voteQuestion = action$ => action$
+  .ofType(ActionTypes.VOTE_QUESTION)
+  .map(signRequest)
+  .switchMap(({headers, payload}) => Observable
+    .ajax.post(`http://${host}:${port}/api/question/vote/${payload.id}`, payload, headers)
+    .map(res => res.response)
+    .mergeMap(question => Observable.of(
+      {
+        type: ActionTypes.VOTE_QUESTION_SUCCESS,
+        payload: question,
+      },
+      Actions.addNotificationAction(
+        {text: `Question with text "${question.text}" voted`, alertType: 'info'},
+      ),
+    ))
+    .catch(error => Observable.of(
+      {
+        type: ActionTypes.VOTE_QUESTION_ERROR,
+        payload: {error},
+      },
+      Actions.addNotificationAction(
+        {text: `[question voted] Error: ${ajaxErrorToMessage(error)}`, alertType: 'danger'}
+      )
+    )));

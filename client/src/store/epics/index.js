@@ -11,7 +11,8 @@ import {getMoreQuestions,
         filterQuestions,
         getMyQuestions,
         getMyAnswers,
-        deleteQuestion} from './questions';
+        deleteQuestion,
+        voteQuestion} from './questions';
 import {getUser} from './user';
 
 export default [
@@ -38,5 +39,6 @@ export default [
   getUser,
   getMyQuestions,
   getMyAnswers,
-  deleteQuestion
+  deleteQuestion,
+  voteQuestion,
 ];

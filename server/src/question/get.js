@@ -17,7 +17,7 @@ export default (app) => {
     const skip = parseInt(req.query.skip, 10) || 0;
     const limit = parseInt(req.query.limit, 10) || 10;
     const questions = await r.table('Question')
-                             .pluck('id', 'text', 'creationDate', 'expirationDate', 'owner')
+                             .pluck('id', 'text', 'creationDate', 'expirationDate', 'owner', 'votes')
                              .orderBy(r.desc('creationDate'))
                              .skip(skip)
                              .limit(limit);

@@ -4,16 +4,18 @@ import AddAnswer from './addAnswer.js';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 
-import {deleteQuestionAction, getUserAction} from '../../store/actions';
+import {deleteQuestionAction, getUserAction, voteQuestionAction} from '../../store/actions';
 
 const mapStateToProps = state => ({
   userAuth: state.auth.user,
   user: state.user.user,
+  questionV: state.questions.question,
 });
 
 const mapDispatchToProps = dispatch => ({
   deleteQuestion: payload => dispatch(deleteQuestionAction(payload)),
   getUser: payload => dispatch(getUserAction(payload)),
+  voteQuestion: payload => dispatch(voteQuestionAction(payload)),
 });
 
 class Question extends Component {
@@ -30,8 +32,13 @@ class Question extends Component {
   }
 
   render() {
-    const {question, user, userAuth, deleteQuestion, getUser} = this.props;
+    let ques;
+    const {question, user, userAuth, deleteQuestion, getUser, voteQuestion, questionV} = this.props;
     const {collapse} = this.state;
+
+    questionV !== undefined ? ques = questionV : ques = question;
+
+    console.log('>>ques', ques)
 
     const handleCollapseClick = (e) => {
       e.preventDefault();
@@ -43,9 +50,16 @@ class Question extends Component {
 
     const handleDelete = e => {
       e.preventDefault();
-      deleteQuestion({id: question.id});
+      deleteQuestion({id: ques.id});
       return false;
     }
+
+    const handleVote = e => {
+      e.preventDefault();
+      voteQuestion({id: ques.id});
+      return false;
+    }
+
 
     return (
       <div className="panel panel-default">
@@ -53,9 +67,9 @@ class Question extends Component {
           <span className={`glyphicon glyphicon-${collapse ? 'plus' : 'minus'}`}
             style={{cursor: 'pointer'}}
             onClick={handleCollapseClick} />{' '}
-          {question.text}
+          {ques.text}
            &nbsp;
-           <Link to={`/profile/${question.owner}`}>
+           <Link to={`/profile/${ques.owner}`}>
              {user.login === userAuth.login ?
                <span>User: me</span>
              :
@@ -63,17 +77,24 @@ class Question extends Component {
             }
 
            </Link>&nbsp;&nbsp;
-           {userAuth && question ?
-             question.owner === userAuth.id ?
+           {userAuth && ques ?
+             ques.owner === userAuth.id ?
                <button
                  className="btn btn-default glyphicon glyphicon-trash btn-danger"
                  onClick={handleDelete}>
                </button>
               : null
            : null}
+           <button
+             className="btn btn-default glyphicon glyphicon-thumbs-up"
+             onClick={handleVote}>
+          </button>
+          <button className="btn btn-default">
+            {ques.votes}
+         </button>
         </div>
-        {collapse ? null : <Answers question={question} userAuth={userAuth} loading />}
-        {collapse ? null : <AddAnswer question={question} />}
+        {collapse ? null : <Answers question={ques} userAuth={userAuth} loading />}
+        {collapse ? null : <AddAnswer question={ques} />}
       </div>
     );
   }

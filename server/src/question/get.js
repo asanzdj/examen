@@ -40,4 +40,31 @@ export default (app) => {
       res.status(400).send({error: 'User does not exist'});
     }
   }));
+
+  app.post('/api/questions/orderByDesc', passport.authenticate('jwt', {session: false}), asyncRequest(async (req, res) => {
+    const order = req.body.order;
+    const type = req.body.type;
+    const skip = parseInt(req.query.skip, 10) || 0;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const questions = await r.table('Question')
+                             .pluck('id', 'text', 'creationDate', 'expirationDate', 'owner', 'votes')
+                             .orderBy(r.desc(order))
+                             .skip(skip)
+                             .limit(limit);
+    // send question back
+    res.send(questions);
+  }));
+
+  app.post('/api/questions/orderByAsc', passport.authenticate('jwt', {session: false}), asyncRequest(async (req, res) => {
+    const order = req.body.order;
+    const skip = parseInt(req.query.skip, 10) || 0;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const questions = await r.table('Question')
+                             .pluck('id', 'text', 'creationDate', 'expirationDate', 'owner', 'votes')
+                             .orderBy(r.asc(order))
+                             .skip(skip)
+                             .limit(limit);
+    // send question back
+    res.send(questions);
+  }));
 };

@@ -36,9 +36,7 @@ class Question extends Component {
     const {question, user, userAuth, deleteQuestion, getUser, voteQuestion, questionV} = this.props;
     const {collapse} = this.state;
 
-    questionV !== undefined ? ques = questionV : ques = question;
-
-    console.log('>>ques', ques)
+    questionV !== undefined  && questionV !== null ? ques = questionV : ques = question;
 
     const handleCollapseClick = (e) => {
       e.preventDefault();

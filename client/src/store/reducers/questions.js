@@ -1,6 +1,6 @@
 import * as ActionTypes from '../actionTypes';
 
-const initialState = {questions: [], question: {}, status: 'inited', answering: {}, hasMore: true};
+const initialState = {questions: [], question: null,  status: 'inited', answering: {}, hasMore: true};
 
 export const questions = (state = initialState, action) => {
   switch (action.type) {
@@ -19,6 +19,8 @@ export const questions = (state = initialState, action) => {
     case ActionTypes.DELETE_QUESTION_ERROR:
     case ActionTypes.GET_QUESTIONS_ERROR:
     case ActionTypes.VOTE_QUESTION_ERROR:
+    case ActionTypes.ORDER_BY_ASC_ERROR:
+    case ActionTypes.ORDER_BY_DESC_ERROR:
       return {
         ...state,
         status: 'error',
@@ -85,6 +87,13 @@ export const questions = (state = initialState, action) => {
         ...state,
         question: action.payload,
       }
+
+      case ActionTypes.ORDER_BY_ASC_SUCCESS:
+      case ActionTypes.ORDER_BY_DESC_SUCCESS:
+        return {
+          ...state,
+          questions: action.payload,
+        }
 
     default:
       return state;

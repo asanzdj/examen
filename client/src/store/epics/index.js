@@ -12,7 +12,9 @@ import {getMoreQuestions,
         getMyQuestions,
         getMyAnswers,
         deleteQuestion,
-        voteQuestion} from './questions';
+        voteQuestion,
+        orderByDesc,
+        orderByAsc} from './questions';
 import {getUser} from './user';
 
 export default [
@@ -41,4 +43,6 @@ export default [
   getMyAnswers,
   deleteQuestion,
   voteQuestion,
+  orderByDesc,
+  orderByAsc,
 ];

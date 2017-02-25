@@ -133,3 +133,13 @@ export const voteQuestionAction = payload => ({
   type: ActionTypes.VOTE_QUESTION,
   payload,
 });
+
+export const orderByDescAction = payload => ({
+  type: ActionTypes.ORDER_BY_DESC,
+  payload,
+});
+
+export const orderByAscAction = payload => ({
+  type: ActionTypes.ORDER_BY_ASC,
+  payload,
+});

@@ -72,7 +72,7 @@ class Question extends Component {
 
            </Link>&nbsp;&nbsp;
            {userAuth && ques ?
-             ques.owner === userAuth.id ?
+             question.owner === userAuth.id ?
                <button
                  className="btn btn-default glyphicon glyphicon-trash btn-danger"
                  onClick={handleDelete}>

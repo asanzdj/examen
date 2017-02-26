@@ -4,17 +4,15 @@ import AddAnswer from './addAnswer.js';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 
-import {deleteQuestionAction, getUserAction, voteQuestionAction} from '../../store/actions';
+import {deleteQuestionAction, voteQuestionAction} from '../../store/actions';
 
 const mapStateToProps = state => ({
   userAuth: state.auth.user,
-  user: state.user.user,
   questionV: state.questions.question,
 });
 
 const mapDispatchToProps = dispatch => ({
   deleteQuestion: payload => dispatch(deleteQuestionAction(payload)),
-  getUser: payload => dispatch(getUserAction(payload)),
   voteQuestion: payload => dispatch(voteQuestionAction(payload)),
 });
 
@@ -27,16 +25,18 @@ class Question extends Component {
   }
 
   componentWillMount() {
-    const {getUser, question} = this.props;
-    getUser({id: question.owner});
+    const {question} = this.props;
+
   }
 
   render() {
     let ques;
-    const {question, user, userAuth, deleteQuestion, getUser, voteQuestion, questionV} = this.props;
+    const {question, user, userAuth, deleteQuestion,  voteQuestion, questionV} = this.props;
     const {collapse} = this.state;
 
-    questionV !== undefined  && questionV !== null ? ques = questionV : ques = question;
+    console.log('>>>Question', question)
+
+    //questionV !== undefined  && questionV !== null ? ques = questionV : ques = question;
 
     const handleCollapseClick = (e) => {
       e.preventDefault();
@@ -48,13 +48,13 @@ class Question extends Component {
 
     const handleDelete = e => {
       e.preventDefault();
-      deleteQuestion({id: ques.id});
+      deleteQuestion({id: question.id});
       return false;
     }
 
     const handleVote = e => {
       e.preventDefault();
-      voteQuestion({id: ques.id});
+      voteQuestion({id: question.id});
       return false;
     }
 
@@ -65,13 +65,13 @@ class Question extends Component {
           <span className={`glyphicon glyphicon-${collapse ? 'plus' : 'minus'}`}
             style={{cursor: 'pointer'}}
             onClick={handleCollapseClick} />{' '}
-          {ques.text}
+          {question.text}
            &nbsp;
-           <Link to={`/profile/${ques.owner}`}>
-             {user.login === userAuth.login ?
+           <Link to={`/profile/${question.owner}`}>
+             {question.login === userAuth.login ?
                <span>User: me</span>
              :
-               <span>User: {user.login}</span>
+               <span>User: {question.login}</span>
             }
 
            </Link>&nbsp;&nbsp;
@@ -88,7 +88,7 @@ class Question extends Component {
              onClick={handleVote}>
           </button>
           <button className="btn btn-default">
-            {ques.votes}
+            {question.votes}
          </button>
         </div>
         {collapse ? null : <Answers question={ques} userAuth={userAuth} loading />}

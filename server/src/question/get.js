@@ -2,7 +2,7 @@
 import passport from 'passport';
 
 // our packages
-import {r, Question} from '../db';
+import {r, Question, User} from '../db';
 import {asyncRequest} from '../util';
 
 export default (app) => {
@@ -17,8 +17,11 @@ export default (app) => {
     const skip = parseInt(req.query.skip, 10) || 0;
     const limit = parseInt(req.query.limit, 10) || 10;
     const questions = await r.table('Question')
-                             .pluck('id', 'text', 'creationDate', 'expirationDate', 'owner', 'votes')
-                             .orderBy(r.desc('creationDate'))
+                             .eqJoin('owner', r.table('User'))
+                             .without({right: {id:true}})
+                             .zip()
+                             .pluck('id', 'text', 'creationDate', 'expirationDate', 'owner', 'votes', 'login')
+                             .orderBy(r.asc('expirationDate'))
                              .skip(skip)
                              .limit(limit);
     // send question back
@@ -47,8 +50,11 @@ export default (app) => {
     const skip = parseInt(req.query.skip, 10) || 0;
     const limit = parseInt(req.query.limit, 10) || 10;
     const questions = await r.table('Question')
-                             .pluck('id', 'text', 'creationDate', 'expirationDate', 'owner', 'votes')
-                             .orderBy(r.desc(order))
+                             .eqJoin('owner', r.table('User'))
+                             .without({right: {id:true}})
+                             .zip()
+                             .pluck('id', 'text', 'creationDate', 'expirationDate', 'owner', 'votes', 'login')
+                             .orderBy(r.asc(order))
                              .skip(skip)
                              .limit(limit);
     // send question back
@@ -60,7 +66,10 @@ export default (app) => {
     const skip = parseInt(req.query.skip, 10) || 0;
     const limit = parseInt(req.query.limit, 10) || 10;
     const questions = await r.table('Question')
-                             .pluck('id', 'text', 'creationDate', 'expirationDate', 'owner', 'votes')
+                             .eqJoin('owner', r.table('User'))
+                             .without({right: {id:true}})
+                             .zip()
+                             .pluck('id', 'text', 'creationDate', 'expirationDate', 'owner', 'votes', 'login')
                              .orderBy(r.asc(order))
                              .skip(skip)
                              .limit(limit);

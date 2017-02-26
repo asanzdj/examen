@@ -283,7 +283,7 @@ export const orderByAsc = action$ => action$
   .ofType(ActionTypes.ORDER_BY_ASC)
   .map(signRequest)
   .switchMap(({headers, payload}) => Observable
-    .ajax.post(`http://${host}:${port}/api/questions/orderByAsc`, payload, headers)
+    .ajax.post(`http://${host}:${port}/api/questions/orderByAsc?limit=${payload.limit}`, payload, headers)
     .map(res => res.response)
     .mergeMap(questions => Observable.of ({
       type: ActionTypes.ORDER_BY_ASC_SUCCESS,
@@ -292,6 +292,26 @@ export const orderByAsc = action$ => action$
     ))
     .catch(error => Observable.of({
       type: ActionTypes.ORDER_BY_ASC_ERROR,
+      payload: error,
+    },
+      Actions.addNotificationAction({
+        text: `error: ${ajaxErrorToMessage(error)}`, alertType: 'danger',
+      })
+    )));
+
+export const getQuestionsMoreVoted = action$ => action$
+  .ofType(ActionTypes.QUESTIONS_MORE_VOTED)
+  .map(signRequest)
+  .switchMap(({headers, payload}) => Observable
+    .ajax.post(`http://${host}:${port}/api/questions/orderByAsc?limit=${payload.limit}`, payload, headers)
+    .map(res => res.response)
+    .mergeMap(questions => Observable.of ({
+      type: ActionTypes.QUESTIONS_MORE_VOTED_SUCCESS,
+      payload: questions,
+    }
+    ))
+    .catch(error => Observable.of({
+      type: ActionTypes.QUESTIONS_MORE_VOTED_ERROR,
       payload: error,
     },
       Actions.addNotificationAction({

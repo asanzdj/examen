@@ -143,3 +143,8 @@ export const orderByAscAction = payload => ({
   type: ActionTypes.ORDER_BY_ASC,
   payload,
 });
+
+export const getQuestionsMoreVotedAction = payload => ({
+  type: ActionTypes.QUESTIONS_MORE_VOTED,
+  payload,
+});

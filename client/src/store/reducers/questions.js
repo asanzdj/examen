@@ -1,6 +1,6 @@
 import * as ActionTypes from '../actionTypes';
 
-const initialState = {questions: [], question: null,  status: 'inited', answering: {}, hasMore: true};
+const initialState = {questions: [], questionsMoreVoted: [], question: null, status: 'inited', answering: {}, hasMore: true};
 
 export const questions = (state = initialState, action) => {
   switch (action.type) {
@@ -21,6 +21,7 @@ export const questions = (state = initialState, action) => {
     case ActionTypes.VOTE_QUESTION_ERROR:
     case ActionTypes.ORDER_BY_ASC_ERROR:
     case ActionTypes.ORDER_BY_DESC_ERROR:
+    case ActionTypes.QUESTIONS_MORE_VOTED_ERROR:
       return {
         ...state,
         status: 'error',
@@ -48,12 +49,6 @@ export const questions = (state = initialState, action) => {
       const newQuestions = [action.payload, ...state.questions];
       return {...state, questions: newQuestions, status: 'done', hasMore: state.hasMore};
     }
-    case ActionTypes.GET_QUESTIONS_SUCCESS:
-      const questions = action.payload;
-      return {...questions};
-
-    case ActionTypes.FILTER_QUESTIONS_SUCCESS:
-      return {...state, questions: action.payload};
 
     case ActionTypes.GET_MY_QUESTIONS_SUCCESS:
       return {
@@ -88,12 +83,19 @@ export const questions = (state = initialState, action) => {
         question: action.payload,
       }
 
-      case ActionTypes.ORDER_BY_ASC_SUCCESS:
       case ActionTypes.ORDER_BY_DESC_SUCCESS:
+      case ActionTypes.FILTER_QUESTIONS_SUCCESS:
+      case ActionTypes.GET_QUESTIONS_SUCCESS:
         return {
           ...state,
           questions: action.payload,
         }
+
+      case ActionTypes.ORDER_BY_ASC_SUCCESS:
+        return {questions: action.payload}
+
+      case ActionTypes.QUESTIONS_MORE_VOTED_SUCCESS:
+        return {questionsMoreVoted: action.payload}
 
     default:
       return state;

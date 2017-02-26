@@ -3,7 +3,6 @@ import Answers from './answers.js';
 import AddAnswer from './addAnswer.js';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
-
 import {deleteQuestionAction, voteQuestionAction} from '../../store/actions';
 
 const mapStateToProps = state => ({
@@ -26,15 +25,12 @@ class Question extends Component {
 
   componentWillMount() {
     const {question} = this.props;
-
   }
 
   render() {
     let ques;
     const {question, user, userAuth, deleteQuestion,  voteQuestion, questionV} = this.props;
     const {collapse} = this.state;
-
-    console.log('>>>Question', question)
 
     //questionV !== undefined  && questionV !== null ? ques = questionV : ques = question;
 
@@ -91,8 +87,8 @@ class Question extends Component {
             {question.votes}
          </button>
         </div>
-        {collapse ? null : <Answers question={ques} userAuth={userAuth} loading />}
-        {collapse ? null : <AddAnswer question={ques} />}
+        {collapse ? null : <Answers question={question} userAuth={userAuth} loading />}
+        {collapse ? null : <AddAnswer question={question}/>}
       </div>
     );
   }

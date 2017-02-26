@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import moment from 'moment';
 
 import {answerQuestion} from '../../store/actions';
 
@@ -8,7 +9,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class AddAnswer extends Component {
-
   constructor(props) {
     super(props);
   }
@@ -24,8 +24,15 @@ class AddAnswer extends Component {
       return false;
     };
 
+    const today = moment().format('YYYY-MM-DD');
+    const date = question.expirationDate.substring(0, 10);
+
+    console.log('>>>DAte', date)
+    console.log('>>>DAte', today)
+
     return (
       <div className="panel-footer">
+        {date.localeCompare(today) === 1 ?
         <form className="form-horizontal">
           <div className="input-group">
             <input
@@ -42,6 +49,8 @@ class AddAnswer extends Component {
             </span>
           </div>
         </form>
+        :
+        <p>Adding answers is closed</p>}
       </div>
     );
   }

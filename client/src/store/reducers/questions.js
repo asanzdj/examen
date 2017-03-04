@@ -23,6 +23,7 @@ export const questions = (state = initialState, action) => {
     case ActionTypes.ANSWER_QUESTION_ERROR:
     case ActionTypes.DELETE_ANSWER_ERROR:
     case ActionTypes.CREATE_QUESTION_ERROR:
+    case ActionTypes.DELETE_QUESTION_ERROR:
     case ActionTypes.ORDER_BY_ASC_ERROR:
     case ActionTypes.ORDER_BY_DESC_ERROR:
       return {
@@ -65,7 +66,26 @@ export const questions = (state = initialState, action) => {
     case ActionTypes.ORDER_BY_ASC_SUCCESS:
     case ActionTypes.ORDER_BY_DESC_SUCCESS:
       return {questions: action.payload}
-    
+
+    case ActionTypes.DELETE_QUESTION_SUCCESS:
+       const filter = state.questions.filter(question => question.id !== action.payload.id);
+       return {
+         ...state,
+         questions: filter,
+        deleting: action.type === ActionTypes.DELETE_QUESTION_SUCCESS ? {
+           ...state.deleting,
+           [action.payload.answerId]: false,
+         } : state.deleting,
+         hasMore: state.hasMore,
+       };
+
+   case ActionTypes.GET_DELETED_QUESTION:
+     const questionsDel = state.questions.filter(question => question.id !== action.payload);
+     return {
+       ...state,
+       questions: questionsDel
+     }
+
     default:
       return state;
   }

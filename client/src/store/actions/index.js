@@ -113,3 +113,13 @@ export const orderByAscAction = payload => ({
   type: ActionTypes.ORDER_BY_ASC,
   payload,
 });
+
+export const deleteQuestionAction = payload => ({
+  type: ActionTypes.DELETE_QUESTION,
+  payload: payload,
+});
+
+export const getDeleteQuestionAction = payload => ({
+  type: ActionTypes.GET_DELETED_QUESTION,
+  payload,
+});

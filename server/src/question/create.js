@@ -1,4 +1,3 @@
-// npm packages
 import passport from 'passport';
 import moment from 'moment';
 
@@ -10,6 +9,7 @@ export default (app) => {
   app.post('/api/question', passport.authenticate('jwt', {session: false}), asyncRequest(async (req, res) => {
     // get user input
     const {text, expirationDate} = req.body;
+    const today = moment().format('YYYY-MM-DD');
 
     // make sure text is not empty
     if (!text || !text.length) {
@@ -23,12 +23,17 @@ export default (app) => {
       return;
     }
 
+    if (expirationDate < today) {
+      res.status(400).send({error: 'Date should be after current date!'});
+      return;
+    }
+
     // save new question
     const question = new Question({
       text,
       expirationDate: moment(expirationDate).toDate(),
       owner: req.user.id,
-      votes: 0,
+      votes: 0
     });
     await question.save();
 

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import {answerQuestion} from '../../store/actions';
+import moment from 'moment';
 
 const mapDispatchToProps = dispatch => ({
   doAnswer: payload => dispatch(answerQuestion(payload)),
@@ -24,24 +25,30 @@ class AddAnswer extends Component {
       return false;
     };
 
+    const today = moment().format('YYYY-MM-DD');
+    const date = question.expirationDate.substring(0, 10);
+
     return (
       <div className="panel-footer">
-        <form className="form-horizontal">
-          <div className="input-group">
-            <input
-              type="text"
-              className="form-control"
-              id="answerInput"
-              placeholder="Enter your answer..."
-              ref={(i) => { answerInput = i; }}
-            />
-            <span className="input-group-btn">
-              <button type="submit" className="btn btn-default" onClick={handleAnswerClick}>
-                Answer
-              </button>
-            </span>
-          </div>
-        </form>
+        {date.localeCompare(today) === 1 ?
+          <form className="form-horizontal">
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                id="answerInput"
+                placeholder="Enter your answer..."
+                ref={(i) => { answerInput = i; }}
+              />
+              <span className="input-group-btn">
+                <button type="submit" className="btn btn-default" onClick={handleAnswerClick}>
+                  Answer
+                </button>
+              </span>
+            </div>
+          </form>
+        :
+          <p>Adding answers is closed</p>}
       </div>
     );
   }

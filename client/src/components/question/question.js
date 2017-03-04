@@ -74,7 +74,7 @@ class Question extends Component {
           : null
           }
         </div>
-        {collapse ? null : <Answers question={question} loading />}
+        {collapse ? null : <Answers question={question} userAuth={userAuth} loading />}
         {collapse ? null : <AddAnswer question={question} />}
       </div>
     );

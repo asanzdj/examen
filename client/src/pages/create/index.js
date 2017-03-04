@@ -19,6 +19,7 @@ const mapDispatchToProps = (dispatch) => ({
 const Create = ({doCreateQuestion}) => {
   let questionText;
   let questionDate;
+  const today = moment().format('YYYY-MM-DD');
 
   const handleCreate = (e) => {
     e.preventDefault();
@@ -52,6 +53,7 @@ const Create = ({doCreateQuestion}) => {
             id="expirationDate"
             placeholder="Expiration date"
             ref={(d) => { questionDate = d; }}
+            min={today}
           />
         </div>
         <button type="submit" className="btn btn-default" onClick={handleCreate}>

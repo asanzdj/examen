@@ -8,6 +8,8 @@ import {getMoreQuestions,
         createQuestion,
         getAnswers,
         doFilterQuestions,
+        orderByDesc,
+        orderByAsc,
         removePendingQuestionNotifications} from './questions';
 
 export default [
@@ -31,4 +33,6 @@ export default [
   createQuestion,
   getAnswers,
   removePendingQuestionNotifications,
+  orderByDesc,
+  orderByAsc,
 ];

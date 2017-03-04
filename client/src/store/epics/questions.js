@@ -157,3 +157,43 @@ export const doFilterQuestions = action$ => action$
       },
     ),
   );
+
+  export const orderByDesc = action$ => action$
+    .ofType(ActionTypes.ORDER_BY_DESC)
+    .map(signRequest)
+    .switchMap(({headers, payload}) => Observable
+      .ajax.post(`http://${host}:${port}/api/questions/orderByDesc`, payload, headers)
+      .map(res => res.response)
+      .mergeMap(questions => Observable.of ({
+        type: ActionTypes.ORDER_BY_DESC_SUCCESS,
+        payload: questions,
+      }
+      ))
+      .catch(error => Observable.of({
+        type: ActionTypes.ORDER_BY_DESC_ERROR,
+        payload: error,
+      },
+        Actions.addNotificationAction({
+          text: `error: ${ajaxErrorToMessage(error)}`, alertType: 'danger',
+        })
+      )));
+
+  export const orderByAsc = action$ => action$
+    .ofType(ActionTypes.ORDER_BY_ASC)
+    .map(signRequest)
+    .switchMap(({headers, payload}) => Observable
+      .ajax.post(`http://${host}:${port}/api/questions/orderByAsc?limit=${payload.limit}`, payload, headers)
+      .map(res => res.response)
+      .mergeMap(questions => Observable.of ({
+        type: ActionTypes.ORDER_BY_ASC_SUCCESS,
+        payload: questions,
+      }
+      ))
+      .catch(error => Observable.of({
+        type: ActionTypes.ORDER_BY_ASC_ERROR,
+        payload: error,
+      },
+        Actions.addNotificationAction({
+          text: `error: ${ajaxErrorToMessage(error)}`, alertType: 'danger',
+        })
+      )));

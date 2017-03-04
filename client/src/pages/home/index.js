@@ -4,11 +4,13 @@ import MediaQuery from 'react-responsive';
 
 // our packages
 import {QuestionList, QuestionSingle} from '../../components/question';
+import Order from '../../components/order';
 import Filter from '../../components/filter';
 
 const Home = () => (
   <div className="container">
     <div className="row">
+      <Order />
       <div className="col-xs-4 pull-right">
         <Filter />
       </div>

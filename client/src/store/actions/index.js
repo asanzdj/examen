@@ -103,3 +103,13 @@ export const doFilterQuestions = payload => ({
   type: ActionTypes.DO_FILTER_QUESTIONS,
   payload,
 });
+
+export const orderByDescAction = payload => ({
+  type: ActionTypes.ORDER_BY_DESC,
+  payload,
+});
+
+export const orderByAscAction = payload => ({
+  type: ActionTypes.ORDER_BY_ASC,
+  payload,
+});

@@ -4,6 +4,7 @@ import create from './create';
 import update from './update';
 import deleteQuestion from './delete';
 import answer from './answer';
+import vote from './vote';
 
 export default (app) => {
   get(app);
@@ -11,4 +12,5 @@ export default (app) => {
   update(app);
   deleteQuestion(app);
   answer(app);
+  vote(app);
 };

@@ -23,6 +23,8 @@ export const questions = (state = initialState, action) => {
     case ActionTypes.ANSWER_QUESTION_ERROR:
     case ActionTypes.DELETE_ANSWER_ERROR:
     case ActionTypes.CREATE_QUESTION_ERROR:
+    case ActionTypes.ORDER_BY_ASC_ERROR:
+    case ActionTypes.ORDER_BY_DESC_ERROR:
       return {
         ...state,
         status: 'error',
@@ -59,6 +61,11 @@ export const questions = (state = initialState, action) => {
       const newQuestions = [action.payload, ...state.questions];
       return {...state, questions: newQuestions, status: 'done', hasMore: state.hasMore};
     }
+
+    case ActionTypes.ORDER_BY_ASC_SUCCESS:
+    case ActionTypes.ORDER_BY_DESC_SUCCESS:
+      return {questions: action.payload}
+    
     default:
       return state;
   }

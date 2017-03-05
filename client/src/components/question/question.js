@@ -5,7 +5,7 @@ import AddAnswer from './addAnswer.js';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import {Spinner} from '../../components/spinner';
-import {deleteQuestionAction} from '../../store/actions';
+import {deleteQuestionAction, getUserAction, voteQuestionAction} from '../../store/actions';
 
 const mapStateToProps = state => ({
   userAuth: state.auth.user,
@@ -14,6 +14,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   deleteQuestion: payload => dispatch(deleteQuestionAction(payload)),
+  voteQuestion: payload => dispatch(voteQuestionAction(payload)),
 });
 
 class Question extends Component {
@@ -25,7 +26,7 @@ class Question extends Component {
   }
 
   render() {
-    const {question, userAuth, deleteQuestion, user, deleting} = this.props;
+    const {question, userAuth, deleteQuestion, user, deleting, voteQuestion} = this.props;
     const {collapse} = this.state;
 
     const handleCollapseClick = (e) => {
@@ -42,7 +43,12 @@ class Question extends Component {
       return false;
     }
 
-    console.log('DEL', deleting);
+    const handleVote = e => {
+      e.preventDefault();
+      voteQuestion({id: question.id})
+      return false;
+    }
+
 
     return (
       <div className="panel panel-default">
@@ -73,6 +79,13 @@ class Question extends Component {
             : null
           : null
           }
+          <button
+            className="btn btn-default glyphicon glyphicon-thumbs-up"
+            onClick={handleVote}>
+         </button>
+         <button className="btn btn-default">
+           {question.votes}
+        </button>
         </div>
         {collapse ? null : <Answers question={question} userAuth={userAuth} loading />}
         {collapse ? null : <AddAnswer question={question} />}

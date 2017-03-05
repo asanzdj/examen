@@ -8,8 +8,22 @@ import {asyncRequest} from '../util';
 export default (app) => {
   app.post('/api/question/vote/:id', passport.authenticate('jwt', {session: false}), asyncRequest(async (req, res) => {
     try {
+      let exist = false;
       const question = await Question.get(req.params.id);
+
+      for (let i = 0; i < question.users.length; i++) {
+        if (question.users[i].id == req.user.id) {
+          exist = true;
+        }
+      }
+
+      if (exist) {
+        res.status(400).send({error: 'Only can vote one time this question'});
+        return;
+      }
+
       question.votes ++;
+      question.users.push({id: req.user.id});
 
       await question.save();
       res.send(question);

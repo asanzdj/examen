@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {getAnswers, deleteAnswer, addObservable, removeObservable} from '../../store/actions';
+import {getAnswers, deleteAnswer, addObservable, removeObservable, voteAnswerAction} from '../../store/actions';
 import {registerQuestionObservable} from '../../store/realtime';
 import {Spinner} from '../../components/spinner';
 
@@ -17,10 +17,10 @@ const mapDispatchToProps = dispatch => ({
   addObservable: observable => dispatch(addObservable(observable)),
   removeObservable: (observable, question) => dispatch(removeObservable({observable, question})),
   deleteAnswer: payload => dispatch(deleteAnswer(payload)),
+  voteAnswer: payload => dispatch(voteAnswerAction(payload)),
 });
 
 class Answers extends Component {
-
   constructor(props) {
     super(props);
     const {question, getAnswers, addObservable, loading} = this.props;
@@ -46,7 +46,7 @@ class Answers extends Component {
 
 
   render() {
-    const {question, answering, deleting, user, deleteAnswer} = this.props;
+    const {question, answering, deleting, user, deleteAnswer, voteAnswer} = this.props;
 
     const onDeleteAnswerClick = (answerId) => {
       deleteAnswer({
@@ -54,6 +54,12 @@ class Answers extends Component {
         answerId,
       });
     };
+
+    const handleVote = (e, id) => {
+      e.preventDefault();
+      voteAnswer({questionId: question.id, answerId: id})
+      return false;
+    }
 
     const {loading} = this.state;
     return (
@@ -74,6 +80,13 @@ class Answers extends Component {
                       </button> : <span className="pull-right"><Spinner /> </span> :
                       null
                   }
+                  <button
+                    className="btn btn-default glyphicon glyphicon-thumbs-up"
+                    onClick={(e) => handleVote(e, answer.id)}>
+                 </button>
+                 <button className="btn btn-default">
+                   {answer.votes}
+                </button>
                 </li>
               ))}
               {answering ? <li className="list-group-item" key={question.answers.length}><Spinner /></li> : null}

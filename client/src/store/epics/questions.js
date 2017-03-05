@@ -245,3 +245,28 @@ export const voteQuestion = action$ => action$
         {text: `[question voted] Error: ${ajaxErrorToMessage(error)}`, alertType: 'danger'}
       )
     )));
+
+  export const voteAnswer = action$ => action$
+    .ofType(ActionTypes.VOTE_ANSWER)
+    .map(signRequest)
+    .switchMap(({headers, payload}) => Observable
+      .ajax.post(`http://${host}:${port}/api/question/${payload.questionId}/${payload.answerId}/vote/`, payload, headers)
+      .map(res => res.response)
+      .mergeMap(question => Observable.of(
+        {
+          type: ActionTypes.VOTE_ANSWER_SUCCESS,
+          payload: question,
+        },
+        Actions.addNotificationAction(
+          {text: `Question with text "${question.text}" voted`, alertType: 'info'},
+        ),
+      ))
+      .catch(error => Observable.of(
+        {
+          type: ActionTypes.VOTE_ANSWER_ERROR,
+          payload: {error},
+        },
+        Actions.addNotificationAction(
+          {text: `[question voted] Error: ${ajaxErrorToMessage(error)}`, alertType: 'danger'}
+        )
+      )));

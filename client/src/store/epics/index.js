@@ -12,7 +12,8 @@ import {getMoreQuestions,
         orderByAsc,
         removePendingQuestionNotifications,
         deleteQuestion,
-        voteQuestion} from './questions';
+        voteQuestion,
+        voteAnswer} from './questions';
 
 export default [
   // auth
@@ -39,4 +40,5 @@ export default [
   orderByAsc,
   deleteQuestion,
   voteQuestion,
+  voteAnswer,
 ];

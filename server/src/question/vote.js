@@ -43,4 +43,49 @@ export default (app) => {
       res.status(400).send({error: 'User does not exist'});
     }
   }));
+
+  app.post('/api/question/:questionId/:answerId/vote', passport.authenticate('jwt', {session: false}),
+  asyncRequest(async (req, res) => {
+    const {questionId, answerId} = req.params;
+    const user = req.user.id;
+    let exist = false;
+
+    const question = await Question.get(questionId);
+
+    if (!question) {
+      res.status(400).send({error: 'Question not found!'});
+      return;
+    }
+
+    const answer = question.answers.filter(a => a.id === answerId)[0];
+
+    if (!answer) {
+      res.status(400).send({error: 'Answer not found!'});
+      return;
+    }
+
+    if (answer.user !== user) {
+      res.status(400).send({error: 'Permission denied!'});
+      return;
+    }
+
+    for (let i = 0; i < answer.users.length; i++) {
+      if (answer.users[i].id == user) {
+        exist = true;
+      }
+    }
+
+    if (exist) {
+      res.status(400).send({error: 'Only can vote one time this answer'});
+      return;
+    }
+
+    answer.votes ++;
+    answer.users.push({id: user});
+
+    // try saving
+    await question.save();
+    res.send(question);
+
+  }));
 };

@@ -49,7 +49,6 @@ class Question extends Component {
       return false;
     }
 
-
     return (
       <div className="panel panel-default">
         <div className="panel-heading">

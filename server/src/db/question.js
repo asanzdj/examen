@@ -9,6 +9,12 @@ export const Question = thinky.createModel('Question', {
       id: thinky.type.string().required(),
       user: thinky.type.string().required(),
       answer: thinky.type.string().required(),
+      votes: thinky.type.number().required(),
+      users: thinky.type.array().schema(
+        thinky.type.object().schema({
+          id: thinky.type.string().required(),
+        })
+      ).default([]),
     })
   ).default([]),
   owner: thinky.type.string().required(),

@@ -128,3 +128,8 @@ export const voteQuestionAction = payload => ({
   type: ActionTypes.VOTE_QUESTION,
   payload,
 });
+
+export const voteAnswerAction = payload => ({
+  type: ActionTypes.VOTE_ANSWER,
+  payload,
+});

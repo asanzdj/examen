@@ -29,7 +29,12 @@ export default (app) => {
     }
 
     // append new answer
-    question.answers.push({id: uuidV1(), answer, user: req.user.id});
+    question.answers.push({
+      id: uuidV1(),
+      answer,
+      user: req.user.id,
+      votes: 0,
+    });
 
     // try saving
     await question.save();
@@ -76,4 +81,5 @@ export default (app) => {
     // send created question back
     res.send(question);
   }));
+
 };

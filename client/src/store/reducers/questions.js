@@ -27,6 +27,7 @@ export const questions = (state = initialState, action) => {
     case ActionTypes.ORDER_BY_ASC_ERROR:
     case ActionTypes.ORDER_BY_DESC_ERROR:
     case ActionTypes.VOTE_QUESTION_ERROR:
+    case ActionTypes.VOTE_ANSWER_ERROR:
       return {
         ...state,
         status: 'error',
@@ -87,12 +88,14 @@ export const questions = (state = initialState, action) => {
        questions: questionsDel,
      }
 
-     case ActionTypes.VOTE_QUESTION_SUCCESS:
-       const ques = state.questions.map(ques => ques.id === action.payload.id ? ques = action.payload : ques);
-       return {
-         ...state,
-         questions: ques,
-       }
+    case ActionTypes.VOTE_QUESTION_SUCCESS:
+    case ActionTypes.VOTE_ANSWER_SUCCESS:
+     const ques = state.questions.map(ques => ques.id === action.payload.id ? ques = action.payload : ques);
+     return {
+       ...state,
+       questions: ques,
+     }
+
 
     default:
       return state;

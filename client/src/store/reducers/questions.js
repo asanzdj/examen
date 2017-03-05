@@ -70,18 +70,23 @@ export const questions = (state = initialState, action) => {
     case ActionTypes.ORDER_BY_DESC_SUCCESS:
       return {questions: action.payload}
 
+      case ActionTypes.DELETE_QUESTION: {
+      const deleting = {...state.deleting, [action.payload.id]: true};
+      return {...state, deleting};
+    };
+
     case ActionTypes.DELETE_QUESTION_SUCCESS:
-       const filter = state.questions.filter(question => question.id !== action.payload.id);
+       const newQues = state.questions.filter(question => question.id !== action.payload.id);
        return {
          ...state,
-         questions: filter,
-        deleting: action.type === ActionTypes.DELETE_QUESTION_SUCCESS ? {
+         questions: newQues,
+         deleting: action.type === ActionTypes.DELETE_ANSWER_SUCCESS ? {
            ...state.deleting,
-           [action.payload.answerId]: false,
+           [action.payload.id]: false,
          } : state.deleting,
          hasMore: state.hasMore,
        };
-
+       
    case ActionTypes.GET_DELETED_QUESTION:
      const questionsDel = state.questions.filter(question => question.id !== action.payload);
      return {

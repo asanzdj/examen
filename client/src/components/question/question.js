@@ -49,6 +49,8 @@ class Question extends Component {
       return false;
     }
 
+    console.log('>>>DEL', deleting)
+
     return (
       <div className="panel panel-default">
         <div className="panel-heading">
@@ -64,19 +66,18 @@ class Question extends Component {
                <span>User: {question.login}</span>
             }
           </Link>&nbsp;&nbsp;
-          {userAuth && question ?
-            question.owner === userAuth.id ?
-              !deleting[question.id] ?
-                <button
-                  className="btn btn-sm btn-danger pull-right"
-                  onClick={(e) => handleDelete(e, question.id)}
-                >
-                  <span className="glyphicon glyphicon-trash action-icon" />
-                </button>
-              :
-                <span className="pull-right"><Spinner /></span>
-            : null
-          : null
+          {question.owner === userAuth.id ?
+            !deleting[question.id] ?
+              <button
+                className="btn btn-sm btn-danger pull-right"
+                onClick={(e) => handleDelete(e, question.id)}
+              >
+                <span className="glyphicon glyphicon-trash action-icon" />
+              </button>
+            :
+              <span className="pull-right"><Spinner /> </span>
+          :
+              null
           }
           <button
             className="btn btn-default glyphicon glyphicon-thumbs-up"

@@ -203,6 +203,7 @@ export const doFilterQuestions = action$ => action$
     .map(signRequest)
     .switchMap(({headers, payload}) => Observable
       .ajax.delete(`http://${host}:${port}/api/question/${payload.id}`, headers)
+      .delayInDebug(2000)
       .map(res => res.response)
       .mergeMap(() => Observable.of ({
         type: ActionTypes.DELETE_QUESTION_SUCCESS,

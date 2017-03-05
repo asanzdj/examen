@@ -3,7 +3,7 @@ import passport from 'passport';
 import uuidV1 from 'uuid/v1';
 
 // our packages
-import {Question} from '../db';
+import {r, Question} from '../db';
 import {asyncRequest} from '../util';
 
 export default (app) => {
@@ -80,6 +80,22 @@ export default (app) => {
 
     // send created question back
     res.send(question);
+  }));
+
+  app.get('/api/question/:questionId/moreVoted', asyncRequest(async (req, res) => {
+    try {
+      const {questionId} = req.params;
+      const answer = await r.table('Question')
+                        .get(questionId)
+                        .getField('answers')
+                        .orderBy(r.desc('votes'))
+                        .limit(1);
+
+      res.status(200).send(answer);
+
+    } catch (e) {
+      res.status(400).send({error: 'Can\'t find the answer'});
+    }
   }));
 
 };

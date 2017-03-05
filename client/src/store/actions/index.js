@@ -133,3 +133,8 @@ export const voteAnswerAction = payload => ({
   type: ActionTypes.VOTE_ANSWER,
   payload,
 });
+
+export const getMoreVotedAction = payload => ({
+  type: ActionTypes.MORE_VOTED_ANSWER,
+  payload,
+});

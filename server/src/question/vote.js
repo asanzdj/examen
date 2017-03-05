@@ -64,11 +64,6 @@ export default (app) => {
       return;
     }
 
-    if (answer.user !== user) {
-      res.status(400).send({error: 'Permission denied!'});
-      return;
-    }
-
     for (let i = 0; i < answer.users.length; i++) {
       if (answer.users[i].id == user) {
         exist = true;
@@ -88,4 +83,5 @@ export default (app) => {
     res.send(question);
 
   }));
+
 };

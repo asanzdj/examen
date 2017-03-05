@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {getAnswers, deleteAnswer, addObservable, removeObservable, voteAnswerAction} from '../../store/actions';
+import {getAnswers, deleteAnswer, addObservable, removeObservable, voteAnswerAction, getMoreVotedAction} from '../../store/actions';
 import {registerQuestionObservable} from '../../store/realtime';
 import {Spinner} from '../../components/spinner';
 
@@ -10,6 +10,7 @@ const mapStateToProps = (state, {question}) => ({
              state.questions.answering[question.id],
   deleting: state.questions.deleting || {},
   user: state.auth.user,
+  moreVoted: state.questions.answer,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -18,6 +19,7 @@ const mapDispatchToProps = dispatch => ({
   removeObservable: (observable, question) => dispatch(removeObservable({observable, question})),
   deleteAnswer: payload => dispatch(deleteAnswer(payload)),
   voteAnswer: payload => dispatch(voteAnswerAction(payload)),
+  getMoreVoted: payload => dispatch(getMoreVotedAction(payload)),
 });
 
 class Answers extends Component {
@@ -39,14 +41,18 @@ class Answers extends Component {
   }
 
   componentWillUnmount() {
-    const {removeObservable, question} = this.props;
+    const {removeObservable, question, getMoreVoted} = this.props;
     const {observable} = this.state;
     removeObservable(observable, question);
   }
 
+  componentWillMount() {
+    const {getMoreVoted, question} = this.props;
+    getMoreVoted({questionId: question.id});
+  }
 
   render() {
-    const {question, answering, deleting, user, deleteAnswer, voteAnswer} = this.props;
+    const {question, answering, deleting, user, deleteAnswer, voteAnswer, moreVoted} = this.props;
 
     const onDeleteAnswerClick = (answerId) => {
       deleteAnswer({
@@ -67,6 +73,9 @@ class Answers extends Component {
         {loading ? <Spinner /> : (
           <div>
             <ul className="list-group">
+              <li className="list-group-item" style={{border: '1px solid green'}}>
+                {moreVoted.answer}
+              </li>
               {question.answers.map((answer, i) => (
                 <li className="list-group-item" key={i} style={{paddingBottom: '20px'}}>
                   {answer.answer}

@@ -13,7 +13,8 @@ import {getMoreQuestions,
         removePendingQuestionNotifications,
         deleteQuestion,
         voteQuestion,
-        voteAnswer} from './questions';
+        voteAnswer,
+        moreVotedAnswer} from './questions';
 
 export default [
   // auth
@@ -41,4 +42,5 @@ export default [
   deleteQuestion,
   voteQuestion,
   voteAnswer,
+  moreVotedAnswer,
 ];
